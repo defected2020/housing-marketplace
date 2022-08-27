@@ -15,7 +15,7 @@ import Spinner from '../components/Spinner'
 
 function CreateListing() {
   // eslist-disable-next-line
-  const [geolocationEnabled, setGeolocationEnabled] = useState(true)
+  const [geolocationEnabled, setGeolocationEnabled] = useState(false)
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
     type: 'rent',
@@ -75,9 +75,13 @@ function CreateListing() {
 
     setLoading(true)
 
+    console.log(discountedPrice, regularPrice)
+
     if (discountedPrice >= regularPrice) {
       setLoading(false)
-      toast.error('Discounted price needs to be less than regular price')
+      toast.error(
+        'Discounted price needs to be less than regular price really?'
+      )
       return
     }
 
@@ -401,16 +405,19 @@ function CreateListing() {
           {offer && (
             <>
               <label className='formLabel'>Discounted Price</label>
-              <input
-                className='formInputSmall'
-                type='number'
-                id='discountedPrice'
-                value={discountedPrice}
-                onChange={onMutate}
-                min='50'
-                max='750000000'
-                required={offer}
-              />
+              <div className='formPriceDiv'>
+                <input
+                  className='formInputSmall'
+                  type='number'
+                  id='discountedPrice'
+                  value={discountedPrice}
+                  onChange={onMutate}
+                  min='50'
+                  max='750000000'
+                  required={offer}
+                />
+                {type === 'rent' && <p className='formPriceText'>$ / Month</p>}
+              </div>
             </>
           )}
 
